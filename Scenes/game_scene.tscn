@@ -1,0 +1,144 @@
+[gd_scene load_steps=13 format=3 uid="uid://805uv5bbgb7r"]
+
+[ext_resource type="Script" uid="uid://bwe6gff0oeexe" path="res://Scripts/GDScript/game_scene.gd" id="1_b6fju"]
+[ext_resource type="PackedScene" uid="uid://bkqqmg154ghcb" path="res://Scenes/turret.tscn" id="1_x87qo"]
+[ext_resource type="Texture2D" uid="uid://bpuoy2ly5r0r7" path="res://2D Art/target.png" id="3_6h5vk"]
+[ext_resource type="Texture2D" uid="uid://c14tgawnrgji" path="res://2D Art/Lunar Lander Upload/Moon Background/Surface_Layer4.png" id="4_rgj8m"]
+[ext_resource type="Texture2D" uid="uid://cy65gjpbh84dc" path="res://2D Art/Lunar Lander Upload/Moon Background/Surface_Layer1.png" id="5_2fmhe"]
+[ext_resource type="Texture2D" uid="uid://dco1ih4b1f8oy" path="res://2D Art/Lunar Lander Upload/Moon Background/Surface_Layer2.png" id="6_7iton"]
+[ext_resource type="Texture2D" uid="uid://k33pxeriat0f" path="res://2D Art/blue-back.png" id="7_2fmhe"]
+[ext_resource type="PackedScene" uid="uid://rtt64vxby80s" path="res://Scenes/astreoid.tscn" id="8_7iton"]
+[ext_resource type="Script" uid="uid://cdqb3ys3rpl86" path="res://Scripts/GDScript/astreoid_spawner.gd" id="8_ikfsv"]
+
+[sub_resource type="Animation" id="Animation_7iton"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Background/Layer 1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(14, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_2fmhe"]
+resource_name = "parallax"
+length = 5.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Background/Layer 1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(14, 0), Vector2(-1207, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ikfsv"]
+_data = {
+&"RESET": SubResource("Animation_7iton"),
+&"parallax": SubResource("Animation_2fmhe")
+}
+
+[node name="GameScene" type="Node2D" node_paths=PackedStringArray("label")]
+script = ExtResource("1_b6fju")
+label = NodePath("CanvasLayer/Label")
+
+[node name="Turret" parent="." instance=ExtResource("1_x87qo")]
+z_index = 5
+position = Vector2(564, 546)
+
+[node name="CrossHair" type="Sprite2D" parent="."]
+top_level = true
+z_index = 15
+position = Vector2(-226, 12)
+scale = Vector2(0.08, 0.08)
+texture = ExtResource("3_6h5vk")
+
+[node name="Ground" type="Node2D" parent="."]
+z_index = 1
+
+[node name="SurfaceLayer4" type="Sprite2D" parent="Ground"]
+texture_repeat = 2
+position = Vector2(594, 632)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("4_rgj8m")
+region_enabled = true
+region_rect = Rect2(0, 0, 800, 120)
+
+[node name="SurfaceLayer1" type="Sprite2D" parent="Ground"]
+position = Vector2(190, 548)
+scale = Vector2(3, 3)
+texture = ExtResource("5_2fmhe")
+
+[node name="SurfaceLayer2" type="Sprite2D" parent="Ground"]
+position = Vector2(608, 619)
+scale = Vector2(3, 3)
+texture = ExtResource("5_2fmhe")
+
+[node name="SurfaceLayer3" type="Sprite2D" parent="Ground"]
+position = Vector2(999, 560)
+scale = Vector2(3, 3)
+texture = ExtResource("5_2fmhe")
+flip_h = true
+
+[node name="SurfaceLayer5" type="Sprite2D" parent="Ground"]
+position = Vector2(214, 629)
+scale = Vector2(3, 3)
+texture = ExtResource("6_7iton")
+flip_h = true
+
+[node name="Background" type="Node2D" parent="."]
+position = Vector2(597, 280)
+
+[node name="ParallaxAnim" type="AnimationPlayer" parent="Background"]
+root_node = NodePath("../../CrossHair")
+libraries = {
+&"": SubResource("AnimationLibrary_ikfsv")
+}
+autoplay = "parallax"
+speed_scale = 0.2
+
+[node name="Layer 1" type="Node2D" parent="Background"]
+position = Vector2(14, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Background/Layer 1"]
+position = Vector2(0, -25)
+scale = Vector2(4.5, 4.5)
+texture = ExtResource("7_2fmhe")
+region_rect = Rect2(0, 0, 1200, 400)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Background/Layer 1"]
+position = Vector2(1222, -25)
+scale = Vector2(4.5, 4.5)
+texture = ExtResource("7_2fmhe")
+region_rect = Rect2(0, 0, 1200, 400)
+
+[node name="AstreoidSpawner" type="Node2D" parent="."]
+script = ExtResource("8_ikfsv")
+spawn_object = ExtResource("8_7iton")
+spawn_y = -55.0
+spawn_x_min = 72.0
+spawn_x_max = 1070.0
+spawn_interval = 0.7
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 40
+text = "0"

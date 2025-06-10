@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://rtt64vxby80s"]
+
+[ext_resource type="Texture2D" uid="uid://cq2d61hf2eo6b" path="res://2D Art/Lunar Lander Upload/Ships/Spaceships.png" id="1_dwhp2"]
+[ext_resource type="Script" uid="uid://bfjwjgcm4rawp" path="res://Scripts/GDScript/astreoid.gd" id="1_k7kbg"]
+[ext_resource type="PackedScene" uid="uid://co3ayidiwj40g" path="res://Scenes/explosion_effect.tscn" id="2_2y755"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_k7kbg"]
+radius = 28.0713
+
+[node name="Astreoid" type="Node2D"]
+script = ExtResource("1_k7kbg")
+explosion_effect = ExtResource("2_2y755")
+move_speed = 200.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 10
+rotation = 1.5708
+scale = Vector2(2, 2)
+texture = ExtResource("1_dwhp2")
+region_enabled = true
+region_rect = Rect2(144, 80, 32, 32)
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_k7kbg")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

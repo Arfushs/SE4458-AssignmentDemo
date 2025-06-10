@@ -1,0 +1,76 @@
+[gd_scene load_steps=9 format=3 uid="uid://bkqqmg154ghcb"]
+
+[ext_resource type="Texture2D" uid="uid://dhy6d2h3hpp1q" path="res://2D Art/Lunar Lander Upload/Effects/Fx_03.png" id="1_6spbj"]
+[ext_resource type="Script" uid="uid://bvqypcl8y0xll" path="res://Scripts/C# Scripts/Turret.cs" id="1_pulj5"]
+[ext_resource type="PackedScene" uid="uid://cue4bjngsmrfr" path="res://Scenes/bullet.tscn" id="2_ahfaj"]
+[ext_resource type="Texture2D" uid="uid://c7s2q7knkiuir" path="res://2D Art/Lunar Lander Upload/Ships/Turrets.png" id="2_pulj5"]
+[ext_resource type="Texture2D" uid="uid://btjmnhjn3886q" path="res://2D Art/Lunar Lander Upload/Ships/Tracked_Vehicle.png" id="3_ahfaj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fiftr"]
+atlas = ExtResource("1_6spbj")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ixah"]
+atlas = ExtResource("1_6spbj")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rgj8m"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fiftr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ixah")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"default",
+"speed": 12.0
+}]
+
+[node name="Turret" type="Node2D" node_paths=PackedStringArray("Head")]
+script = ExtResource("1_pulj5")
+Head = NodePath("Visuals/Head")
+bulletPrefab = ExtResource("2_ahfaj")
+
+[node name="Visuals" type="Node2D" parent="."]
+scale = Vector2(4, 4)
+
+[node name="Head" type="Node2D" parent="Visuals"]
+position = Vector2(0, -10)
+
+[node name="HitFlashAnim" type="AnimatedSprite2D" parent="Visuals/Head"]
+position = Vector2(0.25, -16.5)
+rotation = -1.5708
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_rgj8m")
+frame = 2
+frame_progress = 1.0
+
+[node name="Body2" type="Sprite2D" parent="Visuals/Head"]
+position = Vector2(0, -9)
+scale = Vector2(0.32, 0.760001)
+texture = ExtResource("2_pulj5")
+region_enabled = true
+region_rect = Rect2(88, 24, 16, 16)
+
+[node name="Body" type="Sprite2D" parent="Visuals/Head"]
+position = Vector2(0, -1)
+rotation = -1.5708
+texture = ExtResource("2_pulj5")
+region_enabled = true
+region_rect = Rect2(24, 24, 16, 16)
+
+[node name="Bullet Spawn Position" type="Marker2D" parent="Visuals/Head"]
+position = Vector2(-0.25, -15)
+scale = Vector2(0.25, 0.25)
+
+[node name="Body" type="Node2D" parent="Visuals"]
+
+[node name="Body" type="Sprite2D" parent="Visuals/Body"]
+texture = ExtResource("3_ahfaj")
+region_enabled = true
+region_rect = Rect2(24, 0, 24, 16)
